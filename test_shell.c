@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #define PROCESS_NUM 5 /** Number of processes */
+#define OUTPUT 2 /** standard output */
 
 /**
  * main - run command in separate processes
@@ -22,39 +23,35 @@ int main(int argc, char *argv[], char *env[])
 {
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
-	char *str, exit_app[] = "exit";
+	char *str, **tmp, *store;
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
 
-	printf("$ ");
 	/** prompting user for input */
 	while (1)
 	{
-		pids[i] = fork();
-		if (pids[i] == -1)
+		printf("$ ");
+		str = get_string();
+		store = strdup(str);
+		tmp = separate_string(store);
+		if (find_path(tmp[0]) != NULL)
 		{
-			perror("Error creator process \n");
-			exit(1);
-		}
-		/** child process */
-		if (pids[i] == 0)
-		{
-			str = get_string();
-			if (strcmp(str, exit_app) == 0)
+			pids[i] = fork();
+			if (pids[i] == 0)
 			{
-				exit(1);
+				execute_commands(str, env);
+				free(str);
+				return (0);
 			}
 			else
 			{
-				execute_commands(str, env);
+				/** wait for child process to finish */
+				wait(NULL);
 			}
-			free(str);
-			return (0);
 		}
 		else
 		{
-			/** wait for child process to fnish */
-			wait(NULL);
+			dprintf(OUTPUT, ".%s : No such file or directory", argv[0]);
 		}
 		i++;
 	}

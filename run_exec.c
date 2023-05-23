@@ -20,9 +20,13 @@ int execute_commands(char *command, char **env)
 
 	/** work in child processes */
 	command_arr = separate_string(command);
+	if (find_path(command_arr[0]))
+	{
+		command_arr[0] = find_path(command_arr[0]);
+	}
+
 	if (execve(command_arr[0], command_arr, env) == -1)
 	{
-		perror("Error excuting program: ");
 		return (1);
 	}
 
