@@ -23,6 +23,7 @@ int main(int argc, char *argv[], char *env[])
 {
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
+	pid_t parent_pid = getpid();
 	char *str, **tmp, *store;
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
@@ -39,6 +40,10 @@ int main(int argc, char *argv[], char *env[])
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
+				if (strcmp(str, "exit") == 0)
+				{
+					exit_application(parent_pid, pids[i]);
+				}
 				execute_commands(str, env);
 				free(str);
 				return (0);
@@ -51,7 +56,7 @@ int main(int argc, char *argv[], char *env[])
 		}
 		else
 		{
-			dprintf(OUTPUT, ".%s : No such file or directory", argv[0]);
+			dprintf(OUTPUT, "%s : No such file or directory", argv[0]);
 		}
 		i++;
 	}
