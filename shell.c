@@ -24,7 +24,7 @@ int main(int argc, char *argv[], char *env[])
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
 	pid_t parent_pid = getpid();
-	char *str, **tmp, *store, exit_app[] = "exit";
+	char *str, **tmp, *store;
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
 
@@ -35,12 +35,12 @@ int main(int argc, char *argv[], char *env[])
 		str = get_string();
 		store = strdup(str);
 		tmp = separate_string(store);
-		if (find_path(tmp[0]) != NULL)
+		if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
-				if (strcmp(str, exit_app) == 0)
+				if (strcmp(str, "exit") == 0)
 				{
 					exit_application(parent_pid, pids[i]);
 				}

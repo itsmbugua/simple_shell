@@ -8,7 +8,7 @@
 void exit_application(pid_t child_pid, pid_t parent_pid)
 {
 	/** terminate parrent */
-	kill(parent_pid, SIGTERM);
+	kill(parent_pid, SIGKILL);
 	/** terminate child */
-	kill(child_pid, SIGTERM);
+	kill(child_pid, SIGKILL);
 }
