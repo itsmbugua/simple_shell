@@ -17,16 +17,9 @@ char **separate_string(char *s)
 	char *portion, *tmp;
 	char **cmd_array; /** array of string arrays */
 	char deli[] = " "; /** delimiter of using a space */
-	char *current_path = " .";
-	int x = 0, count = 0, len = 0;
+	int x = 0, len = 0;
 
 	tmp = strdup(s);
-	count = count_strings(s);
-	if (count == 3)
-	{
-		/** add current path if we get two arguments */
-		strcat(tmp, current_path);
-	}
 	cmd_array = malloc(sizeof(char *));
 	if (cmd_array == NULL)
 	{
