@@ -28,15 +28,11 @@ char **separate_string(char *s)
 	portion = strtok(tmp, deli); /** split string using space */
 	while (portion != NULL)
 	{
-		/** reallocate meory to cmd_array */
+		/** reallocate memory to cmd_array */
 		cmd_array = realloc(cmd_array, (x + 1));
 		len = strlen(portion);
 		cmd_array[x] = malloc((len + 1)  * sizeof(char));
 		if (cmd_array[x] == NULL)
-		{
-			return (NULL);
-		}
-		if (cmd_array == NULL)
 		{
 			return (NULL);
 		}
@@ -70,5 +66,5 @@ int count_strings(char *s)
 		count++;
 	}
 
-	return (count + 1);
+	return (count);
 }

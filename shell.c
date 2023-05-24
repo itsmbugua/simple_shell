@@ -34,31 +34,21 @@ int main(int argc, char *argv[], char *env[])
 		str = get_string();
 		store = strdup(str);
 		tmp = separate_string(store);
-		if (count_strings(store) == 3)
-		{
-			tmp = NULL;
-			str = NULL;
-			print_error(argv[0]);
-		}
-		else if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
+		if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
 				execute_commands(str, env, parent_pid);
 				print_error(argv[0]);/**executed if execute_commands fails*/
+				return (0);
 			}
-			else
-			{
-				/** wait for child process to finish */
+			else /** wait for child process to finish */
 				wait(NULL);
-			}
 			i++;
 		}
 		else
-		{
 			print_error(argv[0]);
-		}
 	}
 	return (0);
 }
