@@ -12,12 +12,10 @@
  * @env: current environment variables.
  * @parent_pid: parent process id
  *
- * Return: an array of pipes
- * Description: function to run different,
- * funtions in different processes.
+ * Return: None on failure
  */
 
-int execute_commands(char *command, char **env, pid_t parent_pid)
+void execute_commands(char *command, char **env, pid_t parent_pid)
 {
 	char **command_arr = NULL;
 
@@ -27,17 +25,16 @@ int execute_commands(char *command, char **env, pid_t parent_pid)
 	}
 	/** work in child processes */
 	command_arr = separate_string(command);
-	if (find_path(command_arr[0]))
-	{
-		command_arr[0] = find_path(command_arr[0]);
-	}
+
+	/**
+	 * if (find_path(command_arr[0]))
+	 * {
+	 * command_arr[0] = find_path(command_arr[0]);
+	 * }
+	*/
 
 	if (execve(command_arr[0], command_arr, env) == -1)
 	{
 		free(command);
-		free_arr(command_arr);
-		return (1);
 	}
-
-	return (0);
 }

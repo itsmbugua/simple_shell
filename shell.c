@@ -46,7 +46,7 @@ int main(int argc, char *argv[], char *env[])
 			if (pids[i] == 0)
 			{
 				execute_commands(str, env, parent_pid);
-				return (0);
+				print_error(argv[0]);/**executed if execute_commands fails*/
 			}
 			else
 			{
