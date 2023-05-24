@@ -18,7 +18,7 @@
 void execute_commands(char *command, char **env, pid_t parent_pid)
 {
 	char **command_arr = NULL;
-
+	(void)parent_pid;
 	/**
 	 * if (strcmp(command, "exit") == 0)
 	 * {
