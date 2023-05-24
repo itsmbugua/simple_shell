@@ -1,6 +1,8 @@
 #include "main.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /**
  * execute_commands - function to run different,
@@ -8,16 +10,21 @@
  *
  * @command: pointer to string containing commands..
  * @env: current environment variables.
+ * @parent_pid: parent process id
  *
  * Return: an array of pipes
  * Description: function to run different,
  * funtions in different processes.
  */
 
-int execute_commands(char *command, char **env)
+int execute_commands(char *command, char **env, pid_t parent_pid)
 {
 	char **command_arr = NULL;
 
+	if (strcmp(command, "exit") == 0)
+	{
+		exit_application(getpid(), parent_pid);
+	}
 	/** work in child processes */
 	command_arr = separate_string(command);
 	if (find_path(command_arr[0]))
@@ -27,9 +34,10 @@ int execute_commands(char *command, char **env)
 
 	if (execve(command_arr[0], command_arr, env) == -1)
 	{
+		free(command);
+		free_arr(command_arr);
 		return (1);
 	}
 
-	free_arr(command_arr);
 	return (0);
 }

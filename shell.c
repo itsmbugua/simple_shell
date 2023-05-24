@@ -24,28 +24,28 @@ int main(int argc, char *argv[], char *env[])
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
 	pid_t parent_pid = getpid();
-	char *str, **tmp, *store;
+	char *str, *store, **tmp;
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
 
-	/** prompting user for input */
-	while (1)
+	while (1) /** prompting user for input */
 	{
 		printf("$ ");
 		str = get_string();
 		store = strdup(str);
 		tmp = separate_string(store);
-		if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
+		if (count_strings(store) == 3)
+		{
+			tmp = NULL;
+			str = NULL;
+			print_error(argv[0]);
+		}
+		else if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
-				if (strcmp(str, "exit") == 0)
-				{
-					exit_application(parent_pid, pids[i]);
-				}
-				execute_commands(str, env);
-				free(str);
+				execute_commands(str, env, parent_pid);
 				return (0);
 			}
 			else
@@ -53,12 +53,23 @@ int main(int argc, char *argv[], char *env[])
 				/** wait for child process to finish */
 				wait(NULL);
 			}
+			i++;
 		}
 		else
 		{
-			dprintf(OUTPUT, "%s : No such file or directory\n", argv[0]);
+			print_error(argv[0]);
 		}
-		i++;
 	}
 	return (0);
+}
+
+/**
+ * print_error - function to print error.
+ *
+ * @s: string to print with error message.
+ */
+
+void print_error(char *s)
+{
+	dprintf(OUTPUT, "%s : No such file or directory\n", s);
 }

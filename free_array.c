@@ -9,7 +9,7 @@
 
 void free_arr(char **s)
 {
-	if (s == NULL || *s == NULL)
+	if (s == NULL)
 	{
 		return;
 	}
