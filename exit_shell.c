@@ -3,6 +3,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 /**
  * exit_application - function to kill all processes
  *
@@ -18,7 +19,6 @@ void exit_application(int status)
 
 	kill(child, SIGTERM);
 	kill(parent, SIGTERM);
-
 	exit(status);
 }
 

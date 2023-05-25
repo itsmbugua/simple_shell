@@ -23,7 +23,7 @@ void execute_commands(char *command, char **env)
 
 	if (strcmp(command, "exit") == 0)
 	{
-		exit_application(0);
+		exit_application(1);
 	}
 
 	/** work in child processes */
