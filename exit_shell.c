@@ -8,23 +8,19 @@
 /**
  * exit_application - function to kill all processes
  *
- * @command: exit status.
  * @status: status code to use.
  */
 
-void exit_application(int status, char *command)
+void exit_application(int status)
 {
-	char **args, *deli = " ";
-	int exit_code = status;
-	int x;
+	pid_t child_pid, parent_pid;
 
-	for (x = 0; x  < 80; x++)
-		printf("\b");
+	parent_pid = getppid();
+	child_pid = getpid();
 
-	args = separate_string(command, deli);
-	if (args[1] != NULL)
-		exit_code = atoi(args[1]);
-	exit(exit_code);
+	kill(parent_pid, SIGTERM);
+	kill(child_pid, SIGTERM);
+	exit(status);
 }
 
 /**
