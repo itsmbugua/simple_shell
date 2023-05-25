@@ -9,12 +9,12 @@
  * functions on different processes.
  *
  * @command: pointer to string containing commands..
- * @environ: current environment variables.
+ * @envp: current environment variables.
  *
- * Return: None on failure
+ * Return: -1 on failure
  */
 
-void execute_commands(char *command, char **environ)
+int execute_commands(char *command, char **envp)
 {
 	char **command_arr;
 	char deli[] = " ";
@@ -22,8 +22,12 @@ void execute_commands(char *command, char **environ)
 	int len = 0;
 
 	if (strcmp(command, "exit") == 0)
-	{
 		exit_application(1);
+
+	if (strcmp(command, "env") == 0)
+	{
+		get_current_env(envp);
+		return (0);
 	}
 
 	/** work in child processes */
@@ -31,9 +35,7 @@ void execute_commands(char *command, char **environ)
 	path = find_path(command_arr[0]);
 
 	if (command_arr == NULL)
-	{
-		return;
-	}
+		return (-1);
 
 	/** check for path if found */
 	if (path)
@@ -45,8 +47,10 @@ void execute_commands(char *command, char **environ)
 	}
 
 	/** check if the 2 value null */
-	if (execve(command_arr[0], command_arr, environ) == -1)
+	if (execve(command_arr[0], command_arr, envp) == -1)
 	{
-		return;
+		return (-1);
 	}
+
+	return (0);
 }

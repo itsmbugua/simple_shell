@@ -24,8 +24,7 @@ int main(int argc, char *argv[], char *envp[])
 {
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
-	char *str, *store, **tmp;
-	char deli[] = " ";
+	char *str, *store, **tmp, deli[] = " ";
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
 
@@ -44,8 +43,8 @@ int main(int argc, char *argv[], char *envp[])
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
-				execute_commands(str, envp);
-				print_error(argv, str);/**executed if execute_commands fails*/
+				if (execute_commands(str, envp) == -1)
+					print_error(argv, str);/**executed if execute_commands fails*/
 				return (0);
 			}
 			else /** wait for child process to finish */
