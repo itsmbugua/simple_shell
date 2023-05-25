@@ -24,11 +24,6 @@ int execute_commands(char *command, char **envp)
 	if (strcmp(command, "exit") == 0)
 		exit_application(1);
 
-	if (strcmp(command, "env") == 0)
-	{
-		get_current_env(envp);
-		return (0);
-	}
 	/** work in child processes */
 	command_arr = separate_string(command, deli);
 	path = find_path(command_arr[0]);
