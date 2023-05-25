@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 #define PROCESS_NUM 5 /** Number of processes */
 #define OUTPUT 2 /** standard output */
@@ -33,9 +34,9 @@ int main(int argc, char *argv[], char *envp[])
 		printf("$ ");
 		str = get_string(str);
 		if (str == NULL)
-		{
 			sleep_and_exit();
-		}
+		if (check_for_space(str) == 0)
+			continue;
 		store = strdup(str);
 		tmp = separate_string(store, deli);
 		if (find_path(tmp[0]) || strcmp(str, "exit") == 0)
@@ -51,6 +52,8 @@ int main(int argc, char *argv[], char *envp[])
 				wait(NULL);
 			i++;
 		}
+		else
+			dprintf(OUTPUT, "%s: No such file or directory\n", argv[0]);
 	}
 	return (0);
 }
@@ -65,4 +68,29 @@ int main(int argc, char *argv[], char *envp[])
 void print_error(char **s, char *command)
 {
 	dprintf(OUTPUT, "%s : 1: %s: not found\n", s[0], command);
+}
+
+/**
+ * check_for_space - function to check if a string ,
+ * contains only spaces.
+ *
+ * @s: pointer to string array
+ *
+ * Return: 0 if all characters are spaces.
+ */
+
+int check_for_space(char *s)
+{
+	int x;
+
+	/** looping and checking all string characters */
+	for (x = 0; s[x] != '\0'; x++)
+	{
+		if (s[x] != ' ')
+		{
+			return (1);
+		}
+	}
+
+	return (0);
 }

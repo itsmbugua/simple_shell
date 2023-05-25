@@ -16,5 +16,6 @@ void print_error(char **s, char *command);
 void replace_character(char *str, char s1, char s2);
 void sleep_and_exit(void);
 void get_current_env(char **envp);
+int check_for_space(char *s);
 
 #endif
