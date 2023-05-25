@@ -16,7 +16,12 @@ void exit_application(int status, char *command)
 {
 	char **args, *deli = " ";
 	int exit_code = status;
+	int x;
 
+	for (x = 0; x  < 80; x++)
+	{
+		 printf("\b");
+	}
 	args = separate_string(command, deli);
 	if (args[1] != NULL)
 		exit_code = atoi(args[1]);
