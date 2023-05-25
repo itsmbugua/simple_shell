@@ -23,9 +23,9 @@ char *find_path(char *s)
 	char *store, *tmp_1, *tmp_2;
 
 	if (path == NULL)
-	{
 		return (NULL);
-	}
+	if (s == NULL)
+		return (NULL);
 
 	/** get the last value in path string */
 	tmp_1 = s;

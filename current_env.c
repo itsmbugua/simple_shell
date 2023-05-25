@@ -11,7 +11,7 @@
 
 void get_current_env(char **envp)
 {
-	int x = 0;
+	int x = 0, i;
 
 	/** check for null */
 	if (envp == NULL)
@@ -19,10 +19,17 @@ void get_current_env(char **envp)
 		return;
 	}
 
+	/** clear anything printed before the variables */;
+	for (i= 0; i < 80; i++)
+	{
+		  printf("\b");
+	}
+
 	/** print environment variables */
 	while (envp[x] != NULL)
 	{
 		printf("%s\n", envp[x]);
+		fflush(stdin);
 		x++;
 	}
 }
