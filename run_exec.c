@@ -1,6 +1,8 @@
 #include "main.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /**
  * execute_commands - function to run different,
@@ -9,23 +11,38 @@
  * @command: pointer to string containing commands..
  * @env: current environment variables.
  *
- * Return: an array of pipes
- * Description: function to run different,
- * funtions in different processes.
+ * Return: None on failure
  */
 
-int execute_commands(char *command, char **env)
+void execute_commands(char *command, char **env)
 {
-	char **command_arr = NULL;
+	char **command_arr;
+	char deli[] = " ";
+	char *path;
+	int len = 0;
 
-	/** work in child processes */
-	command_arr = separate_string(command);
-	if (execve(command_arr[0], command_arr, env) == -1)
+	if (strcmp(command, "exit") == 0)
 	{
-		perror("Error excuting program: ");
-		return (1);
+		exit_application(0);
 	}
 
-	free_arr(command_arr);
-	return (0);
+	/** work in child processes */
+	command_arr = separate_string(command, deli);
+	path = find_path(command_arr[0]);
+	if (command_arr == NULL)
+	{
+		return;
+	}
+	if (path != NULL)
+	{
+		len = strlen(path);
+		free(command_arr[0]);
+		command_arr[0] = malloc((len + 1) * sizeof(char));
+		strcpy(command_arr[0], path);
+	}
+	/** check if the 2 value null */
+	if (execve(command_arr[0], command_arr, env) == -1)
+	{
+		return;
+	}
 }
