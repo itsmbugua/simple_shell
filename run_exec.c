@@ -10,33 +10,39 @@
  *
  * @command: pointer to string containing commands..
  * @env: current environment variables.
- * @parent_pid: parent process id
  *
  * Return: None on failure
  */
 
-void execute_commands(char *command, char **env, pid_t parent_pid)
+void execute_commands(char *command, char **env)
 {
 	char **command_arr;
+	char deli[] = " ";
+	char *path;
+	int len = 0;
 
 	if (strcmp(command, "exit") == 0)
 	{
-		exit_application(getpid(), parent_pid);
-		exit(EXIT_SUCCESS);
+		exit_application(0);
 	}
 
 	/** work in child processes */
-	command_arr = separate_string(command);
-
-	/** check if the 2 value null */
-	if (command_arr[1] && command_arr[2] == NULL)
+	command_arr = separate_string(command, deli);
+	path = find_path(command_arr[0]);
+	if (command_arr == NULL)
 	{
 		return;
 	}
-
-	if (execve(command_arr[0], command_arr, env) == 0)
+	if (path != NULL)
 	{
-		printf("cool");
+		len = strlen(path);
+		free(command_arr[0]);
+		command_arr[0] = malloc((len + 1) * sizeof(char));
+		strcpy(command_arr[0], path);
+	}
+	/** check if the 2 value null */
+	if (execve(command_arr[0], command_arr, env) == -1)
+	{
 		return;
 	}
 }

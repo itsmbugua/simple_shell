@@ -1,18 +1,39 @@
 #include "main.h"
 #include <unistd.h>
 #include <signal.h>
-
+#include <stdlib.h>
+#include <stdio.h>
 /**
  * exit_application - function to kill all processes
  *
- * @child_pid: child process id.
- * @parent_pid: parent process id.
+ * @status: exit status.
  */
 
-void exit_application(pid_t child_pid, pid_t parent_pid)
+void exit_application(int status)
 {
-	/** terminate parrent */
-	kill(parent_pid, SIGKILL);
-	/** terminate child */
-	kill(child_pid, SIGKILL);
+	pid_t parent, child;
+
+	parent = getppid();
+	child = getpid();
+
+	kill(child, SIGTERM);
+	kill(parent, SIGTERM);
+
+	exit(status);
+}
+
+/**
+ * sleep_and_exit - function to sleep and exit abruptly
+ */
+
+void sleep_and_exit(void)
+{
+	char command[] = "/bin/sleep";
+	char *args[] = { "sleep", "0.1", NULL};
+	char *env[] = { NULL };
+
+	if (execve(command, args, env) == -1)
+	{
+		return;
+	}
 }

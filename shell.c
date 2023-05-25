@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define PROCESS_NUM 5 /** Number of processes */
 #define OUTPUT 2 /** standard output */
@@ -23,24 +24,28 @@ int main(int argc, char *argv[], char *env[])
 {
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
-	pid_t parent_pid = getpid();
-	char *str, *store, **tmp;
+	char *str = NULL, *store, **tmp;
+	char deli[] = " ";
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
 
 	while (1) /** prompting user for input */
 	{
 		printf("$ ");
-		str = get_string();
+		str = get_string(str);
+		if (str == NULL)
+		{
+			sleep_and_exit();
+		}
 		store = strdup(str);
-		tmp = separate_string(store);
+		tmp = separate_string(store, deli);
 		if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
-				execute_commands(str, env, parent_pid);
-				print_error(argv[0]);/**executed if execute_commands fails*/
+				execute_commands(str, env);
+				print_error(argv, str);/**executed if execute_commands fails*/
 				return (0);
 			}
 			else /** wait for child process to finish */
@@ -48,7 +53,10 @@ int main(int argc, char *argv[], char *env[])
 			i++;
 		}
 		else
-			print_error(argv[0]);
+			print_error(argv, str);
+		free(str);
+		free(store);
+		free(tmp);
 	}
 	return (0);
 }
@@ -57,9 +65,10 @@ int main(int argc, char *argv[], char *env[])
  * print_error - function to print error.
  *
  * @s: string to print with error message.
+ * @command: sec
  */
 
-void print_error(char *s)
+void print_error(char **s, char *command)
 {
-	dprintf(OUTPUT, "%s : No such file or directory\n", s);
+	dprintf(OUTPUT, "%s : 1: %s: not found\n", s[0], command);
 }
