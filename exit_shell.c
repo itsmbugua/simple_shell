@@ -9,7 +9,7 @@
  * exit_application - function to kill all processes
  *
  * @status: status code to use.
- */
+*/
 
 void exit_application(int status)
 {
@@ -20,6 +20,7 @@ void exit_application(int status)
 
 	kill(parent_pid, SIGTERM);
 	kill(child_pid, SIGTERM);
+
 	exit(status);
 }
 
