@@ -19,9 +19,8 @@ void exit_application(int status, char *command)
 	int x;
 
 	for (x = 0; x  < 80; x++)
-	{
-		 printf("\b");
-	}
+		printf("\b");
+
 	args = separate_string(command, deli);
 	if (args[1] != NULL)
 		exit_code = atoi(args[1]);
