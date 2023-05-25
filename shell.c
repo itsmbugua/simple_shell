@@ -51,8 +51,6 @@ int main(int argc, char *argv[], char *envp[])
 				wait(NULL);
 			i++;
 		}
-		else
-			print_error(argv, str);
 	}
 	return (0);
 }

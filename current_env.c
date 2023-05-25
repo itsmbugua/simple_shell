@@ -29,7 +29,6 @@ void get_current_env(char **envp)
 	while (envp[x] != NULL)
 	{
 		printf("%s\n", envp[x]);
-		fflush(stdin);
 		x++;
 	}
 }
