@@ -41,6 +41,8 @@ int main(int argc, char *argv[], char *envp[])
 		tmp = separate_string(store, deli);
 		if (verify_command(tmp[0]) == 0 || strcmp(tmp[0], "exit") == 0)
 		{
+			if (strcmp(tmp[0], "exit") == 0)
+				exit_application(0, str);
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{

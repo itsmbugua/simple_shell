@@ -9,7 +9,7 @@ void remove_new_line(char *s);
 char *get_string(char *buffer);
 int count_strings(char *s, char *deli);
 int execute_commands(char *command, char **envp);
-void exit_application(int status);
+void exit_application(int status, char *command);
 char *find_path(char *s);
 int check_errors(char *str);
 void print_error(char **s, char *command);

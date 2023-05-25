@@ -3,23 +3,24 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /**
  * exit_application - function to kill all processes
  *
- * @status: exit status.
+ * @command: exit status.
+ * @status: status code to use.
  */
 
-void exit_application(int status)
+void exit_application(int status, char *command)
 {
-	pid_t parent_pid, child_pid;
+	char **args, *deli = " ";
+	int exit_code = status;
 
-	parent_pid = getppid();
-	child_pid = getpid();
-
-	kill(parent_pid, SIGTERM);
-	kill(child_pid, SIGTERM);
-	exit(status);
+	args = separate_string(command, deli);
+	if (args[1] != NULL)
+		exit_code = atoi(args[1]);
+	exit(exit_code);
 }
 
 /**
