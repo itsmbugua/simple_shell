@@ -9,5 +9,4 @@
 void run_cd(char *directory)
 {
 	(void)directory;
-	return;
 }

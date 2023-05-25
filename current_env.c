@@ -19,10 +19,10 @@ void get_current_env(char **envp)
 		return;
 	}
 
-	/** clear anything printed before the variables */;
-	for (i= 0; i < 80; i++)
+	/** clear anything printed before the variables */
+	for (i = 0; i < 80; i++)
 	{
-		  printf("\b");
+		printf("\b");
 	}
 
 	/** print environment variables */
