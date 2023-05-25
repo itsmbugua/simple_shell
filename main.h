@@ -8,7 +8,7 @@ void free_arr(char **s);
 void remove_new_line(char *s);
 char *get_string(char *buffer);
 int count_strings(char *s, char *deli);
-void execute_commands(char *command, char **env);
+void execute_commands(char *command, char **environ);
 void exit_application(int status);
 char *find_path(char *s);
 int check_errors(char *str);

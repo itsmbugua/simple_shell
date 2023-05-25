@@ -15,16 +15,16 @@
  *
  * @argc: number of command line arguments.
  * @argv: array of command line arguments.
- * @env: current environment.
+ * @envp: current environment.
  *
  * Return: always 0 if success.
  */
 
-int main(int argc, char *argv[], char *env[])
+int main(int argc, char *argv[], char *envp[])
 {
 	pid_t pids[PROCESS_NUM]; /** array with process ids */
 	int i = 0;
-	char *str = NULL, *store, **tmp;
+	char *str, *store, **tmp;
 	char deli[] = " ";
 	(void)argc; /** we won't use argc */
 	(void)argv; /** we won't use argv */
@@ -39,12 +39,12 @@ int main(int argc, char *argv[], char *env[])
 		}
 		store = strdup(str);
 		tmp = separate_string(store, deli);
-		if (find_path(tmp[0]) != NULL || strcmp(str, "exit") == 0)
+		if (find_path(tmp[0]) || strcmp(str, "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
 			{
-				execute_commands(str, env);
+				execute_commands(str, envp);
 				print_error(argv, str);/**executed if execute_commands fails*/
 				return (0);
 			}
@@ -54,9 +54,6 @@ int main(int argc, char *argv[], char *env[])
 		}
 		else
 			print_error(argv, str);
-		free(str);
-		free(store);
-		free(tmp);
 	}
 	return (0);
 }
