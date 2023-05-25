@@ -22,9 +22,8 @@ int execute_commands(char *command, char **envp)
 	int len = 0;
 
 	if (strcmp(command, "exit") == 0)
-	{
 		exit_application(0);
-	}
+
 	/** work in child processes */
 	command_arr = separate_string(command, deli);
 	path = find_path(command_arr[0]);
