@@ -55,7 +55,7 @@ char *find_path(char *s)
 		}
 		portion = strtok(NULL, deli);
 	}
-	return (NULL);
+	return (s);
 }
 /**
  * replace_character - function to replace all occurences of,

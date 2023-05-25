@@ -39,7 +39,7 @@ int main(int argc, char *argv[], char *envp[])
 			continue;
 		store = strdup(str);
 		tmp = separate_string(store, deli);
-		if (find_path(tmp[0]) || strcmp(str, "exit") == 0)
+		if (verify_command(tmp[0]) == 0 || strcmp(tmp[0], "exit") == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
@@ -53,7 +53,7 @@ int main(int argc, char *argv[], char *envp[])
 			i++;
 		}
 		else
-			dprintf(OUTPUT, "%s: No such file or directory\n", argv[0]);
+			print_error(argv, str);
 	}
 	return (0);
 }
@@ -67,7 +67,15 @@ int main(int argc, char *argv[], char *envp[])
 
 void print_error(char **s, char *command)
 {
-	dprintf(OUTPUT, "%s : 1: %s: not found\n", s[0], command);
+	int i;
+
+	/** clear anything printed before the variables */
+	for (i = 0; i < 80; i++)
+	{
+		printf("\b");
+	}
+
+	dprintf(OUTPUT, "\b%s : 1: %s: not found\n", s[0], command);
 }
 
 /**
@@ -93,4 +101,32 @@ int check_for_space(char *s)
 	}
 
 	return (0);
+}
+
+
+/**
+ * verify_command - function to verify a command exists
+ *
+ * @command: pointer to string
+ *
+ * Return: 0 if success else returns 1
+ */
+
+int verify_command(char *command)
+{
+	FILE *fp;
+	char *cmd;
+	int result = 1;
+
+	cmd = strdup(command);
+	strcat(cmd, " -v %s > /dev/null 2>&1");
+	fp = popen(cmd, "r");
+	/** check the exit code and the return */
+	if (fp != NULL)
+	{
+		result = 0;
+	}
+
+	fclose(fp);
+	return (result);
 }

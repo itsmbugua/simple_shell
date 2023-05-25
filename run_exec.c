@@ -42,9 +42,7 @@ int execute_commands(char *command, char **envp)
 
 	/** check if the 2 value null */
 	if (execve(command_arr[0], command_arr, envp) == -1)
-	{
 		return (-1);
-	}
 
 	return (0);
 }
