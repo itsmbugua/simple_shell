@@ -32,7 +32,7 @@ char **separate_string(char *s, char *deli)
 		/** reallocate memory to cmd_array */
 		cmd_array = realloc(cmd_array, (x + 1) * sizeof(char *));
 		len = strlen(portion);
-		cmd_array[x] = malloc((len)  * sizeof(char));
+		cmd_array[x] = malloc((len + 1)  * sizeof(char));
 		if (cmd_array[x] == NULL)
 		{
 			return (NULL);
@@ -43,7 +43,7 @@ char **separate_string(char *s, char *deli)
 		x++;
 	}
 	cmd_array[x] = NULL;
-	free(s); /** free tmp */
+	free(tmp); /** free tmp */
 	return (cmd_array);
 }
 

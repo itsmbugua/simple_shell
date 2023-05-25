@@ -26,9 +26,6 @@ char *get_string(char *buffer)
 
 	/** remove new line character */
 	remove_new_line(buffer);
-	if (buffer[0] == '\0')
-	{
-		return (NULL);
-	}
+
 	return (buffer);
 }

@@ -20,12 +20,24 @@ char *find_path(char *s)
 	struct stat st;
 	char *path = getenv("PATH");
 	char deli[] = " ";
-	char *store;
+	char *store, *tmp_1, *tmp_2;
 
-	/** check first if path exists */
-	if (stat(s, &st) == 0)
+	if (path == NULL)
 	{
-		return (s);
+		return (NULL);
+	}
+
+	/** get the last value in path string */
+	tmp_1 = s;
+	if (stat(tmp_1, &st) == 0)
+	{
+		replace_character(tmp_1, '/', ' ');
+		tmp_2 = strtok(tmp_1, deli);
+		while (tmp_2 != NULL)
+		{
+			s = strdup(tmp_2);
+			tmp_2 = strtok(NULL, deli);
+		}
 	}
 
 	store = strdup(path);
@@ -43,7 +55,6 @@ char *find_path(char *s)
 		}
 		portion = strtok(NULL, deli);
 	}
-
 	return (NULL);
 }
 /**

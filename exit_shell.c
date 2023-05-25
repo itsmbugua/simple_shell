@@ -12,13 +12,13 @@
 
 void exit_application(int status)
 {
-	pid_t parent, child;
+	pid_t parent_pid, child_pid;
 
-	parent = getppid();
-	child = getpid();
+	parent_pid = getppid();
+	child_pid = getpid();
 
-	kill(child, SIGTERM);
-	kill(parent, SIGTERM);
+	kill(parent_pid, SIGTERM);
+	kill(child_pid, SIGTERM);
 	exit(status);
 }
 
