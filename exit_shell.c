@@ -9,17 +9,30 @@
  * exit_application - function to kill all processes
  *
  * @status: status code to use.
+ * @args: arguments for exit()
 */
 
-void exit_application(int status)
+void exit_application(int status, char *args[])
 {
-	pid_t child_pid, parent_pid;
+	int exit_code, i;
 
-	parent_pid = getppid();
-	child_pid = getpid();
+	/** clear any data printed previously */
+	for (i = 0; i < 80; i++)
+	{
+		printf("\b");
+	}
 
-	kill(parent_pid, SIGTERM);
-	kill(child_pid, SIGTERM);
+	/** check if args is null */
+	if (args == NULL)
+	{
+		exit(status);
+	}
+	/** check if exit has arguments*/
+	if (args[1] != NULL)
+	{
+		exit_code = atoi(args[1]);
+		exit(exit_code);
+	}
 
 	exit(status);
 }

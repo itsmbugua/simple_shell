@@ -39,7 +39,9 @@ int main(int argc, char *argv[], char *envp[])
 			continue;
 		store = strdup(str);
 		tmp = separate_string(store, deli);
-		if (verify_command(tmp[0]) == 0 || strcmp(tmp[0], "exit") == 0)
+		if (strcmp(tmp[0], "exit") == 0)
+			exit_application(EXIT_SUCCESS, tmp);
+		if (verify_command(tmp[0]) == 0)
 		{
 			pids[i] = fork();
 			if (pids[i] == 0)
