@@ -14,13 +14,7 @@
 
 void exit_application(int status, char *args[])
 {
-	int exit_code, i;
-
-	/** clear any data printed previously */
-	for (i = 0; i < 80; i++)
-	{
-		printf("\b");
-	}
+	int exit_code;
 
 	/** check if args is null */
 	if (args == NULL)

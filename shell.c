@@ -31,7 +31,8 @@ int main(int argc, char *argv[], char *envp[])
 
 	while (1) /** prompting user for input */
 	{
-		printf("$ ");
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
 		str = get_string(str);
 		if (str == NULL)
 			sleep_and_exit();
