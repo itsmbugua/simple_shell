@@ -11,7 +11,7 @@
 
 void get_current_env(char **envp)
 {
-	int x = 0, i;
+	int x = 0;
 
 	/** check for null */
 	if (envp == NULL)
